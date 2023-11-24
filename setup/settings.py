@@ -168,3 +168,18 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# E-Mail Settings
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = str(os.getenv('EMAIL_HOST', 'default-smtp-host'))
+EMAIL_PORT = int(os.getenv('EMAIL_PORT',465))
+EMAIL_USE_SSL = True
+EMAIL_HOST_USER = str(os.getenv('EMAIL_HOST_USER'))
+EMAIL_HOST_PASSWORD = str(os.getenv('EMAIL_HOST_PASSWORD'))
+
+if not EMAIL_HOST_USER:
+    raise ValueError("EMAIL_HOST_USER must be set in environment")
+if not EMAIL_HOST_PASSWORD:
+    raise ValueError("EMAIL_HOST_PASSWORD must be set in environment")
+
+# 

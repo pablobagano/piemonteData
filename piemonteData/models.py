@@ -3,7 +3,7 @@ from django.core.mail import send_mail
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
 from django.urls import reverse
-from django.utils.http import urlsafe_base64_decode
+from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 from django.contrib.sites.shortcuts import get_current_site
 from django.http import HttpRequest
@@ -29,12 +29,13 @@ class Diretoria(models.Model):
             user.last_name = self.sobrenome
             user.is_superuser = True
             token = default_token_generator.make_token(user)
-            uid = urlsafe_base64_decode(force_bytes(user.pk))
+            uid = urlsafe_base64_encode(force_bytes(user.pk))
             password_reset_url = reverse('password_reset_confirm', kwargs={'uidb64':uid, 'token':token})
             send_mail(
                 'Defina a sua senha',
                 f"Por favor defina a sua senha no link a seguir: {password_reset_url}",
-                [user.email]
+                [user.email], 
+                fail_silently = False
             )
 
 
