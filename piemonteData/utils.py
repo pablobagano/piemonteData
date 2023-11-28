@@ -9,6 +9,10 @@ import logging
 
 def create_user_and_send_email(first_name, last_name, email):
     username = f"{first_name}.{last_name}".lower()
+    num = 1
+    while User.objects.filter(username= username).exists():
+        username = f"{username}{num}"
+        num += 1
     user, created = User.objects.get_or_create(username=username, defaults={
         'first_name': first_name,
         'last_name' : last_name, 
