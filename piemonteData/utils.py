@@ -6,6 +6,7 @@ from django.urls import reverse
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 import logging
+import os
 
 def create_user_and_send_email(first_name, last_name, email):
     username = f"{first_name}.{last_name}".lower()
@@ -33,11 +34,10 @@ def create_user_and_send_email(first_name, last_name, email):
                 [user.mail],
                 fail_silently=False
             )
-            self.email_sent = True
+            return True
         except Exception as e:
             logger = logging.getLogger(__name__)
             logger.error(f"Não foi possível enviar email de confirmação: {e}")
-            self.email_sent = False
             try:
                 send_mail(
                     'Inconsistência de cadastro',
@@ -47,3 +47,4 @@ def create_user_and_send_email(first_name, last_name, email):
                 )
             except Exception as fallback_error:
                 logger.error(f"Erro ao enviar email de fallback: {fallback_error}")
+            return False

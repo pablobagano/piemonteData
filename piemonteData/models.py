@@ -27,7 +27,7 @@ class Diretoria(models.Model):
     
     def save(self, *args, **kwargs):
         super(Diretoria, self).save(*args, **kwargs)
-        create_user_and_send_email(self.nome, self.sobrenome, self.email)
+        criacao_usuario = create_user_and_send_email(self.nome, self.sobrenome, self.email)
         super(Diretoria, self).save(*args, **kwargs)
 
 class Gerencia(models.Model):
