@@ -4,7 +4,20 @@ from info import *
 from .utils import create_user_and_send_email
 # Create your models here.
 
-    
+"""
+This project is developed for Piemonte Group, a company in the financial business. 
+The class Diretoria, Gerencia, Supervisao and Agentes represent diffent hierarchical levels. Respectively Directors, Managers, Supervisors and Agents. 
+Each class has standard attribuites, such as nome(name), sobrenome(last name), matricula (ID) and email.
+Each object will also become a user to the platform, in which each hierachical level will hold differente access priveleges. 
+All the objects are vertically connected through ForeignKey relationships. This design's intention is to reflect the company's organizational structure
+
+Special Features:
+- Custom save methods for automated user creation and email notifications.
+- Hierarchical data integrity ensured through Django's ORM.
+
+This structure allows for a clear representation of the company's hierarchy and efficient user management within the platform.
+"""
+
 
 class Diretoria(models.Model):
     nome = models.CharField(max_length=20, null=False, blank=False)
