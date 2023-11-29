@@ -16,7 +16,7 @@ from dotenv import load_dotenv
 import pymysql
 from django.db import DatabaseError, connections
 from azure.storage.blob import BlobClient
-from azure.identity import DefaultAzureCredential
+from django.contrib.messages import constants as messages
 import tempfile
 
 pymysql.install_as_MySQLdb()
@@ -182,4 +182,47 @@ if not EMAIL_HOST_USER:
 if not EMAIL_HOST_PASSWORD:
     raise ValueError("EMAIL_HOST_PASSWORD must be set in environment")
 
-# 
+# Logging configuration
+
+LOGGING = {
+    'version':1,
+    'disable_existing_loggers' : False, 
+    'formatters' : {
+        'verbose' : {
+            'format' : '{levelname} {asctime} {modue} {message}',
+            'style' : '{' 
+        },
+        'simple' : {
+            'format' : '{levelname} {message}',
+            'style' : '{',
+        },
+    },
+    'handlers' : {
+        'file' : {
+            'level' : 'DEBUG',
+            'class' : 'logging.FileHandler', 
+            'filename' : os.path.join(BASE_DIR, 'debug.log'),
+            'formatter': 'verbose'
+        },
+        'console' : {
+            'level' : 'DEBUG',
+            'class' : 'logging.StreamHandler',
+            'formatter': 'simple'
+        },
+    },
+    'loggers' : {
+        'django': {
+            'handlers' : ['console'],
+            'level' : 'INFO',
+            'propagate' : True
+        }
+    }
+
+}
+
+# Messagens configuration
+
+MESSAGE_TAGS = {
+    messages.ERROR : 'danger', 
+    messages.SUCCESS : 'success'
+}

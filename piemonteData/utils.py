@@ -5,7 +5,6 @@ from django.contrib.auth.tokens import default_token_generator
 from django.urls import reverse
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
-import logging
 import os
 
 def create_user_and_send_email(first_name, last_name, email):
@@ -31,13 +30,13 @@ def create_user_and_send_email(first_name, last_name, email):
                 'Defina sua senha - PiemoneteData',
                 f"Por defina a sua senha no link a seguir: {password_reset_url}",
                 os.getenv('EMAIL_HOST_USER'),
-                [user.mail],
+                [user.email],
                 fail_silently=False
             )
             return True
-        except Exception as e:
+        except Exception:
             logger = logging.getLogger(__name__)
-            logger.error(f"Não foi possível enviar email de confirmação: {e}")
+            logger.exception(f"Não foi possível enviar email de confirmação")
             try:
                 send_mail(
                     'Inconsistência de cadastro',
@@ -45,8 +44,8 @@ def create_user_and_send_email(first_name, last_name, email):
                     os.getenv('EMAIL_HOST_USER'),
                     [os.getenv('EMAIL_HOST_USER')]
                 )
-            except Exception as fallback_error:
-                logger.error(f"Erro ao enviar email de fallback: {fallback_error}")
+            except Exception:
+                logger.exception(f"Erro ao enviar email de fallback")
             return False
 
 
