@@ -48,3 +48,5 @@ def create_user_and_send_email(first_name, last_name, email):
             except Exception as fallback_error:
                 logger.error(f"Erro ao enviar email de fallback: {fallback_error}")
             return False
+
+

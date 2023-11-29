@@ -16,13 +16,14 @@ class Diretoria(models.Model):
     def __str__(self):
         return f"{self.nome} {self.sobrenome}"
     
-   
     
     def save(self, *args, **kwargs):
         super(Diretoria, self).save(*args, **kwargs)
         criacao_usuario = create_user_and_send_email(self.nome, self.sobrenome, self.email)
         self.email_sent = criacao_usuario
-        super(Diretoria, self).save(*args, **kwargs)
+        if self.email_sent != criacao_usuario:
+            self.email_sent = criacao_usuario
+            self.__class__.objects.filter(pk = self.pk).update(email_sent=criacao_usuario)
 
 class Gerencia(models.Model):
     diretor = models.ForeignKey(Diretoria, on_delete= models.CASCADE)
@@ -38,7 +39,9 @@ class Gerencia(models.Model):
         super(Gerencia, self).save(*args, **kwargs)
         criacao_usuario = create_user_and_send_email(self.nome, self.sobrenome, self.email)
         self.email_sent = criacao_usuario
-        super(Gerencia, self).save(*args, **kwargs)
+        if self.email_sent != criacao_usuario:
+            self.email_sent = criacao_usuario
+            self.__class__.objects.filter(pk = self.pk).update(email_sent=criacao_usuario)
 
 
 class Supervisao(models.Model):
@@ -55,7 +58,10 @@ class Supervisao(models.Model):
     def save(self, *args, **kwargs):
         super(Supervisao, self).save(*args, **kwargs)
         criacao_usuario = create_user_and_send_email(self.nome, self.sobrenome, self.email)
-        super(Supervisao, self).save(*args, **kwargs)
+        self.email_sent = criacao_usuario
+        if self.email_sent != criacao_usuario:
+            self.email_sent = criacao_usuario
+            self.__class__.objects.filter(pk = self.pk).update(email_sent=criacao_usuario)
 
 class Agente(models.Model):
     diretoria = models.ForeignKey(Diretoria, on_delete= models.CASCADE)
@@ -74,7 +80,9 @@ class Agente(models.Model):
         super(Supervisao, self).save(*args, **kwargs)
         criacao_usuario = create_user_and_send_email(self.nome, self.sobrenome, self.email)
         self.email_sent = criacao_usuario
-        super(Supervisao, self).save(*args, **kwargs)    
+        if self.email_sent != criacao_usuario:
+            self.email_sent = criacao_usuario
+            self.__class__.objects.filter(pk = self.pk).update(email_sent=criacao_usuario)   
         
 
 class UserProfile(models.Model):
