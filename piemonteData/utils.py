@@ -7,12 +7,13 @@ from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 import os
 
-"""
-The function create_user_and_send_email automates the process of user creation when a now object representing an employee is created. 
-A username is created along with a link that is sent to the new employee's e-mail in which they will be request to reset their password.
-Aside form logging, the built-in Python library used to aid in exception handliing, all the procedures are executed Django's built-in functions
-"""
+
 def create_user_and_send_email(first_name, last_name, email):
+    """
+    The function create_user_and_send_email automates the process of user creation when a now object representing an employee is created. 
+    A username is created along with a link that is sent to the new employee's e-mail in which they will be request to reset their password.
+    Aside form logging, the built-in Python library used to aid in exception handliing, all the procedures are executed Django's built-in functions
+    """
     username = f"{first_name}.{last_name}".lower()
     num = 1
     while User.objects.filter(username= username).exists():
