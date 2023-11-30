@@ -1,25 +1,40 @@
 from django.contrib import admin
-from .models import Diretoria, Gerencia, Supervisao, Agente
+from .models import Diretoria, Gerencia, Supervisao, Agente, UserProfile
 
 # Register your models here.
 
-class Diretor(admin.ModelAdmin):
+class DiretorAdmin(admin.ModelAdmin):
     list_display = ('id', 'nome', 'sobrenome', 'matricula', 'email')
+    list_display_links = ('id', 'nome', 'matricula')
+    search_fields = ('nome', 'matricula',)
+    list_per_page = 20
 
-admin.site.register(Diretoria, Diretor)
+admin.site.register(Diretoria, DiretorAdmin)
 
-class Gerente(admin.ModelAdmin):
-    list_display = ('id', 'nome', 'sobrenome', 'matricula', 'email', 'diretor')
+class GerenteAdmin(admin.ModelAdmin):
+    list_display = ('id', 'nome', 'sobrenome', 'matricula', 'email', 'diretoria')  
+    list_display_links = ('id', 'nome', 'matricula')
+    search_fields = ('nome', 'matricula',)
+    list_per_page = 20
 
-admin.site.register(Gerencia, Gerente)
+admin.site.register(Gerencia, GerenteAdmin)
 
-class Supervisor(admin.ModelAdmin):
-    list_display = ('id', 'nome', 'sobrenome', 'matricula', 'email', 'diretor', 'gerente')
+class SupervisorAdmin(admin.ModelAdmin):
+    list_display = ('id', 'nome', 'sobrenome', 'matricula', 'email', 'diretoria', 'gerencia')
+    list_display_links = ('id', 'nome', 'matricula')
+    search_fields = ('nome', 'matricula',)
+    list_per_page = 20
 
-admin.site.register(Supervisao, Supervisor)
+admin.site.register(Supervisao, SupervisorAdmin)
 
-class Agente(admin.ModelAdmin):
-    list_display = ('id', 'nome', 'sobrenome', 'matricula', 'email', 'diretor', 'gerente', 'supervisor')
+class AgenteAdmin(admin.ModelAdmin):
+    list_display = ('id', 'nome', 'sobrenome', 'matricula', 'cidade', 'email', 'diretoria', 'gerencia', 'supervisor')
+    list_display_links = ('id', 'nome', 'matricula')
+    search_fields = ('nome', 'matricula', 'supervisor','cidade',)
+    list_per_page = 20
 
-admin.site.register(Agente, Agente)
+admin.site.register(Agente, AgenteAdmin)
+
+admin.site.register(UserProfile)
+
 

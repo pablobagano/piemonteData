@@ -39,9 +39,10 @@ class Diretoria(models.Model):
             self.__class__.objects.filter(pk = self.pk).update(email_sent=criacao_usuario)
 
 class Gerencia(models.Model):
-    diretor = models.ForeignKey(Diretoria, on_delete= models.CASCADE)
+    diretoria = models.ForeignKey(Diretoria, on_delete= models.CASCADE)
     nome = models.CharField(max_length=20, null=False, blank=False)
     sobrenome = models.CharField(max_length=30, null= False, blank=False)
+    matricula = models.CharField(max_length=30, null=False, blank=False)
     email = models.EmailField()
     email_sent = models.BooleanField(default=False)
 
@@ -62,6 +63,7 @@ class Supervisao(models.Model):
     gerencia = models.ForeignKey(Gerencia, on_delete= models.CASCADE)
     nome = models.CharField(max_length=20, null=True, blank=False)
     sobrenome = models.CharField(max_length=30, null=True, blank=False)
+    matricula = models.CharField(max_length=30, null=False, blank=False)
     email = models.EmailField()
     email_sent = models.BooleanField(default=False)
 
@@ -82,6 +84,7 @@ class Agente(models.Model):
     supervisor = models.ForeignKey(Supervisao, on_delete=models.CASCADE)
     nome = models.CharField(max_length=30, null=False, blank=False)
     sobrenome = models.CharField(max_length=50, null=False, blank=False)
+    matricula = models.CharField(max_length=30, null=False, blank=False)
     cidade = models.CharField(max_length=50, choices=lista_cidades, null=False, blank= False)
     email = models.EmailField()
     email_sent = models.BooleanField
