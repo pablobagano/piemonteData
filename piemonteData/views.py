@@ -22,3 +22,8 @@ class AgenteViewSet(viewsets.ModelViewSet):
     """Displays all agents"""
     queryset = Agente.objects.all()
     serializer_class = AgenteSerializer
+
+class UserProfileViewSet(viewsets.ModelViewSet):
+    """Displays user profiles"""
+    queryset = UserProfile.objects.all()
+    serializer_class = UserPofileSerializer
