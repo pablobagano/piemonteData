@@ -6,7 +6,7 @@ from .utils import create_user_and_send_email
 
 """
 This project is developed for Piemonte Group, a company in the financial business. 
-The class Diretoria, Gerencia, Supervisao and Agentes represent diffent hierarchical levels. Respectively Directors, Managers, Supervisors and Agents. 
+The class Diretoria, Gerencia, Supervisao and Agentes represent different hierarchical levels. Respectively Directors, Managers, Supervisors and Agents. 
 Each class has standard attribuites, such as nome(name), sobrenome(last name), matricula (ID) and email.
 Each object will also become a user to the platform, in which each hierachical level will hold differente access priveleges. 
 All the objects are vertically connected through ForeignKey relationships. This design's intention is to reflect the company's organizational structure
