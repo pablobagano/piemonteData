@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth.views import PasswordResetConfirmView
-from piemonteData.views import DiretoriaViewSet, GerenciaViewSet, SupervisaoViewSet, AgenteViewSet, UserProfileViewSet, AgentesPorSupervisor
+from piemonteData.views import DiretoriaViewSet, GerenciaViewSet, SupervisaoViewSet, AgenteViewSet, UserProfileViewSet, AgentesPorSupervisor, AgentesPorCidade
 from rest_framework import routers 
 
 router = routers.DefaultRouter()
@@ -29,5 +29,6 @@ router.register('usuarios', UserProfileViewSet, basename= 'Usuarios')
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
-    path('supervisor/<int:pk>/agentes/', AgentesPorSupervisor.as_view())
-]
+    path('supervisor/<int:pk>/agentes/', AgentesPorSupervisor.as_view()),
+    path('agentes/cidade', AgentesPorCidade.as_view())
+] 

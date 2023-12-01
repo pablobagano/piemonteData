@@ -29,8 +29,16 @@ class AgentesPorSupervisorSerializer(serializers.ModelSerializer):
         fields = ['nome', 'sobrenome', 'cidade', 'matricula', 'supervisor']
     def get_cidade(self, obj):
         return obj.get_cidade_display()
- 
+
+class AgentesPorCidadeSerializer(serializers.ModelSerializer):
+    cidade = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Agente
+        fields = ['nome', 'sobrenome', 'matricula', 'cidade']
     
+    def get_cidade(self, obj):
+        return obj.get_cidade_display()
 
 class UserPofileSerializer(serializers.ModelSerializer):
     class Meta:
