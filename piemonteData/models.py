@@ -99,7 +99,8 @@ class Agente(models.Model):
         if self.email_sent != criacao_usuario:
             self.email_sent = criacao_usuario
             self.__class__.objects.filter(pk = self.pk).update(email_sent=criacao_usuario)   
-        
+
+
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)

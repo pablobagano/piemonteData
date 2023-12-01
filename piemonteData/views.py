@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework import viewsets, generics
 from piemonteData.models import Diretoria, Gerencia, Supervisao, Agente, UserProfile
-from .serializer import DiretoriaSerializer, GerenciaSerializer, SupervisaoSerializer, AgenteSerializer, UserPofileSerializer
+from .serializer import DiretoriaSerializer, GerenciaSerializer, SupervisaoSerializer, AgenteSerializer, UserPofileSerializer,AgentesPorSupervisorSerializer
 
 class DiretoriaViewSet(viewsets.ModelViewSet):
     """Displays all board members"""
@@ -27,3 +27,10 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     """Displays user profiles"""
     queryset = UserProfile.objects.all()
     serializer_class = UserPofileSerializer
+
+class AgentesPorSupervisor(generics.ListAPIView):
+    """Displays a list of agents per supervisor"""
+    def get_queryset(self):
+        queryset = Agente.objects.filter(supervisor_id = self.kwargs['pk'])
+        return queryset
+    serializer_class = AgentesPorSupervisorSerializer
