@@ -18,7 +18,7 @@ class SupervisaoSerializer(serializers.ModelSerializer):
 
 class AgenteSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Supervisao
+        model = Agente
         fields = '__all__'
 
 class AgentesPorSupervisorSerializer(serializers.ModelSerializer):
