@@ -18,6 +18,7 @@ from django.db import DatabaseError, connections
 from azure.storage.blob import BlobClient
 from django.contrib.messages import constants as messages
 import tempfile
+import logging
 
 pymysql.install_as_MySQLdb()
 load_dotenv()
@@ -47,6 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'django_filters',
     'piemonteData.apps.PiemontedataConfig'
 ]
 
@@ -95,6 +97,8 @@ try:
     blob_stream = blob_client.download_blob()
     blob_data = blob_stream.readall()
 except Exception as e:
+    logger = logging.getLogger(__name__)
+    logger.exception(f"{e}")
     print(f"{type(e).__name__}:{e}")
 try:
     temp_cert_file = tempfile.NamedTemporaryFile(delete=False)
@@ -103,6 +107,8 @@ try:
     temp_cert_file.close()
     print(f"Blob data successfully fetched and written to {temp_cert_path}")
 except Exception as e:
+    logger = logging.getLogger(__name__)
+    logger.exception(f"{e}")
     print(f"{type(e).__name__}:{e}")
 
 DATABASES = {
@@ -125,6 +131,8 @@ try:
     connections['default'].ensure_connection()
     print("Login successfull")
 except DatabaseError as db_err:
+    logger = logging.getLogger(__name__)
+    logger.exception(f"{db_err}")
     print(f"DatabaseError: {db_err}")
 
 # Password validation
@@ -189,7 +197,7 @@ LOGGING = {
     'disable_existing_loggers' : False, 
     'formatters' : {
         'verbose' : {
-            'format' : '{levelname} {asctime} {modue} {message}',
+            'format' : '{levelname} {asctime} {module} {message}',
             'style' : '{' 
         },
         'simple' : {

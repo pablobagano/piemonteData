@@ -87,7 +87,7 @@ class Agente(models.Model):
     matricula = models.CharField(max_length=30, null=False, blank=False)
     cidade = models.CharField(max_length=50, choices=lista_cidades, null=False, blank= False)
     email = models.EmailField()
-    email_sent = models.BooleanField
+    email_sent = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.nome} {self.sobrenome}"
