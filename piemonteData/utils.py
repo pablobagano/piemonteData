@@ -6,6 +6,8 @@ from django.urls import reverse
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 import os
+from rest_framework import serializers
+from .validators import * 
 
 
 def create_user_and_send_email(first_name, last_name, email):
@@ -55,3 +57,12 @@ def create_user_and_send_email(first_name, last_name, email):
             return False
 
 
+# Validation Function 
+
+def validate(self, data):
+        if not nome_valido(data['nome']):
+            raise serializers.ValidationError({'nome':'O nome deve conter apenas letras'})
+        if not sobrenome_valido(data['sobrenome']):
+            raise serializers.ValidationError({'O sobrenome':'O sobrenome deve conter apenas letras'})
+        if not matricula_valida(data['matricula']):
+            raise serializers.ValidationError({'nome':'A matrícula deve conter apenas dígitos'})

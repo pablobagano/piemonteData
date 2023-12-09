@@ -7,54 +7,25 @@ class DiretoriaSerializer(serializers.ModelSerializer):
         model = Diretoria
         fields = '__all__'
     
-    def validate(self, data):
-        if not nome_valido(data['nome']):
-            raise serializers.ValidationError({'nome':'O nome deve conter apenas letras'})
-        if not sobrenome_valido(data['sobrenome']):
-            raise serializers.ValidationError({'O sobrenome':'O sobrenome deve conter apenas letras'})
-        if not matricula_valida(data['matricula']):
-            raise serializers.ValidationError({'nome':'A matrícula deve conter apenas dígitos'})
-        return data
     
 class GerenciaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Gerencia
         fields = '__all__'
 
-    def validate(self, data):
-        if not nome_valido(data['nome']):
-            raise serializers.ValidationError({'nome':'O nome deve conter apenas letras'})
-        if not sobrenome_valido(data['sobrenome']):
-            raise serializers.ValidationError({'O sobrenome':'O sobrenome deve conter apenas letras'})
-        if not matricula_valida(data['matricula']):
-            raise serializers.ValidationError({'nome':'A matrícula deve conter apenas dígitos'})
+    
         
 class SupervisaoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Supervisao
         fields = '__all__'
     
-    def validate(self, data):
-        if not nome_valido(data['nome']):
-            raise serializers.ValidationError({'nome':'O nome deve conter apenas letras'})
-        if not sobrenome_valido(data['sobrenome']):
-            raise serializers.ValidationError({'O sobrenome':'O sobrenome deve conter apenas letras'})
-        if not matricula_valida(data['matricula']):
-            raise serializers.ValidationError({'nome':'A matrícula deve conter apenas dígitos'})
 
 class AgenteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Agente
         fields = '__all__'
-    
-    def validate(self, data):
-        if not nome_valido(data['nome']):
-            raise serializers.ValidationError({'nome':'O nome deve conter apenas letras'})
-        if not sobrenome_valido(data['sobrenome']):
-            raise serializers.ValidationError({'O sobrenome':'O sobrenome deve conter apenas letras'})
-        if not matricula_valida(data['matricula']):
-            raise serializers.ValidationError({'nome':'A matrícula deve conter apenas dígitos'})
-
+ 
 class AgentesPorSupervisorSerializer(serializers.ModelSerializer):
     supervisor = serializers.ReadOnlyField(source='supervisor.nome')
     cidade = serializers.SerializerMethodField()

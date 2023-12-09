@@ -28,6 +28,7 @@ router.register('usuarios', UserProfileViewSet, basename= 'Usuarios')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('accounts/', include('django.contrib.auth.urls') ),
     path('', include(router.urls)),
     path('supervisor/<int:pk>/agentes/', AgentesPorSupervisor.as_view()),
     path('agentes/cidade', AgentesPorCidade.as_view())
