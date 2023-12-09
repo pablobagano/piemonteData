@@ -6,4 +6,4 @@ class AgenteFilter(django_filters.FilterSet):
 
     class Meta:
         model = Agente
-        fields = ['email_sent', 'supervisor', 'nome_supervisor']
+        fields = ['email_sent', 'supervisor', 'nome_supervisor', 'cidade']
