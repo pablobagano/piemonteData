@@ -234,3 +234,7 @@ MESSAGE_TAGS = {
     messages.ERROR : 'danger', 
     messages.SUCCESS : 'success'
 }
+
+# BASE URL
+
+BASE_URL = str(os.getenv('BASE_URL','http:localhost:8000'))

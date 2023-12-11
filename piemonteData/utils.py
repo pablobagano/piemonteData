@@ -8,7 +8,7 @@ from django.utils.encoding import force_bytes
 import os
 from rest_framework import serializers
 from .validators import * 
-
+from django.conf import settings
 
 def create_user_and_send_email(first_name, last_name, email):
     """
@@ -28,7 +28,7 @@ def create_user_and_send_email(first_name, last_name, email):
     }) 
     token = default_token_generator.make_token(user)
     uid = urlsafe_base64_encode(force_bytes(user.pk))
-    password_reset_url = reverse('password_reset_confirm', kwargs= {
+    password_reset_url =  settings.BASE_URL + reverse('password_reset_confirm', kwargs= {
         'uidb64':uid, 
         'token': token
     })
