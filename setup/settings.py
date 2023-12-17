@@ -53,7 +53,7 @@ INSTALLED_APPS = [
     'django_filters',
     'piemonteData.apps.PiemontedataConfig',
     'storages',
-    
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
