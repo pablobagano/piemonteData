@@ -35,7 +35,9 @@ SECRET_KEY = str(os.getenv('SECRET_KEY'))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG','False') == 'True'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split()
+
+CORS_ALLOWED_ORIGINS = str(os.getenv('CORS_ORIGINS')).split()
 
 
 # Application definition
@@ -49,7 +51,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'django_filters',
-    'piemonteData.apps.PiemontedataConfig'
+    'piemonteData.apps.PiemontedataConfig',
+    'storages',
+    
 ]
 
 MIDDLEWARE = [
@@ -169,7 +173,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = 'static/'
+if DEBUG:
+    STATICFILES_DIRS = [os.path.join(BASE_DIR, 'setup/static')]
+    STATIC_URL = '/static/'
+else:
+    STATICFILES_STORAGE = 'storages.backends.azure_storage.AzureStorage'
+    AZURE_ACCOUNT_NAME = str(os.getenv('AZURE_ACCOUNT_NAME'))
+    AZURE_ACCOUNT_KEY = str(os.getenv('AZURE_ACCOUNT_KEY'))
+    AZURE_CONTAINER = str(os.getenv('AZURE_CONTAINER'))
+    AZURE_DOMAIN = f"{AZURE_ACCOUNT_NAME}.blob.core.windows.net"
+    STATIC_URL = f"https://{AZURE_DOMAIN}/{AZURE_CONTAINER}"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field

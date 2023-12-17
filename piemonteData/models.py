@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from info import * 
 from .utils import create_user_and_send_email
-# Create your models here.
+
 
 """
 This project is developed for Piemonte Group, a company in the financial business. 
