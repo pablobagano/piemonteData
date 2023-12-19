@@ -41,4 +41,3 @@ steps:
     testResultsFiles: "**/TEST-*.xml"
     testRunTitle: 'Python 3.12 Tests'
   condition: succeededOrFailed()
-
