@@ -41,3 +41,11 @@ steps:
     testResultsFiles: "**/TEST-*.xml"
     testRunTitle: 'Python 3.12 Tests'
   condition: succeededOrFailed()
+
+- task: AzureWebApp@1
+  inputs:
+    azureSubscription: 'Piemonte Data'
+    appName: 'testespiemonte'
+    appType: 'webAppLinux'
+    runtimeStack: 'PYTHON|3.12'
+    package: '$(Build.ArtifactStagingDirectory)'
