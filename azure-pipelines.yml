@@ -3,6 +3,8 @@ trigger:
 
 variables:
 - group: variablesEnv
+- name: DEBUG
+  value: 'True'
 
 pool:
   vmImage: ubuntu-latest
