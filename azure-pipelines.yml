@@ -4,6 +4,27 @@ trigger:
 variables:
 - group: variablesEnv
 
+steps:
+- script: |
+    echo "##vso[task.setvariable variable=AZURE_ACCOUNT_KEY]$(AZURE-ACCOUNT-KEY)"
+    echo "##vso[task.setvariable variable=AZURE_ACCOUNT_NAME]$(AZURE-ACCOUNT-NAME)"
+    echo "##vso[task.setvariable variable=BLOB_NAME]$(BLOB-NAME)"
+    echo "##vso[task.setvariable variable=BLOB_URL]$(BLOB-URL)"
+    echo "##vso[task.setvariable variable=CONN_STRING_DB]$(CONN-STRING-DB)"
+    echo "##vso[task.setvariable variable=CONTAINER_NAME]$(CONTAINER-NAME)"
+    echo "##vso[task.setvariable variable=DB_HOST]$(DB-HOST)"
+    echo "##vso[task.setvariable variable=DB_NAME]$(DB-NAME)"
+    echo "##vso[task.setvariable variable=DB_PASSWORD]$(DB-PASSWORD)"
+    echo "##vso[task.setvariable variable=DB_USER]$(DB-USER)"
+    echo "##vso[task.setvariable variable=DIRETORIA]$(DIRETORIA)"
+    echo "##vso[task.setvariable variable=EMAIL_HOST]$(EMAIL-HOST)"
+    echo "##vso[task.setvariable variable=EMAIL_HOST_PASSWORD]$(EMAIL-HOST-PASSWORD)"
+    echo "##vso[task.setvariable variable=EMAIL_HOST_USER]$(EMAIL-HOST-USER)"
+    echo "##vso[task.setvariable variable=EMAIL_PORT]$(EMAIL-PORT)"
+    echo "##vso[task.setvariable variable=GERENCIA]$(GERENCIA)"
+    echo "##vso[task.setvariable variable=SECRET_KEY]$(SECRET-KEY)"
+  displayName: 'Rename and Capitalize Variables'
+
 pool:
   vmImage: ubuntu-latest
 
