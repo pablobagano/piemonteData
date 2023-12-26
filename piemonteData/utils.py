@@ -59,7 +59,7 @@ def create_user_and_send_email(first_name, last_name, email):
 
 # Validation Function 
 
-def validate(self, data):
+def validate(data):
         if not nome_valido(data['nome']):
             raise serializers.ValidationError({'nome':'O nome deve conter apenas letras'})
         if not sobrenome_valido(data['sobrenome']):
