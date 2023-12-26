@@ -16,7 +16,8 @@ class GerenciaSerializer(serializers.ModelSerializer):
         model = Gerencia
         fields = '__all__'
 
-    
+    def validate(self, data):
+        return validate(data)
         
 class SupervisaoSerializer(serializers.ModelSerializer):
     class Meta:
