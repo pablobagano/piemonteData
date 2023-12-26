@@ -1,12 +1,15 @@
 from rest_framework import serializers
 from piemonteData.models import Agente, Diretoria, Gerencia, Supervisao, UserProfile
 from .validators import *
+from .utils import validate
 
 class DiretoriaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Diretoria
         fields = '__all__'
     
+    def validate(self, data):
+        return validate(data)
     
 class GerenciaSerializer(serializers.ModelSerializer):
     class Meta:
@@ -20,11 +23,16 @@ class SupervisaoSerializer(serializers.ModelSerializer):
         model = Supervisao
         fields = '__all__'
     
+    def validate(self, data):
+        return validate(data)
 
 class AgenteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Agente
         fields = '__all__'
+
+        def validate(self, data):
+         return validate(data)
  
 class AgentesPorSupervisorSerializer(serializers.ModelSerializer):
     supervisor = serializers.ReadOnlyField(source='supervisor.nome')
