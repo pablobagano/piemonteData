@@ -1,10 +1,10 @@
 trigger:
-- main
+- develop  
 
 variables:
 - group: variablesEnv
 - name: DEBUG
-  value: 'True'
+  value: 'True'  
 
 pool:
   vmImage: ubuntu-latest
@@ -69,7 +69,7 @@ steps:
 - task: AzureWebApp@1
   inputs:
     azureSubscription: 'Piemonte Data'
-    appName: 'testespiemonte'
+    appName: 'testespiemonte-test'  # Update to your test app name in Azure
     appType: 'webAppLinux'
     runtimeStack: 'PYTHON|3.12'
     package: '$(Build.ArtifactStagingDirectory)'
