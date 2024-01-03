@@ -66,3 +66,4 @@ def validate(data):
             raise serializers.ValidationError({'O sobrenome':'O sobrenome deve conter apenas letras'})
         if not matricula_valida(data['matricula']):
             raise serializers.ValidationError({'nome':'A matrícula deve conter apenas dígitos'})
+        return data
