@@ -35,9 +35,9 @@ SECRET_KEY = str(os.getenv('SECRET_KEY'))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG','False') == 'True'
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS','').split()
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split()
 
-CORS_ALLOWED_ORIGINS = str(os.getenv('CORS_ORIGINS','')).split()
+CORS_ALLOWED_ORIGINS = os.getenv('CORS_ORIGINS').split()
 
 # Security Settings
 SECURE_SSL_REDIRECT = os.getenv('SECURE_SSL_REDIRECT', 'False') == 'True'
@@ -67,6 +67,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
