@@ -31,12 +31,13 @@ class Diretoria(models.Model):
     
     
     def save(self, *args, **kwargs):
+        email_sent_before_save = self.email_sent
         super(Diretoria, self).save(*args, **kwargs)
         criacao_usuario = create_user_and_send_email(self.nome, self.sobrenome, self.email)
-        self.email_sent = criacao_usuario
-        if self.email_sent != criacao_usuario:
-            self.email_sent = criacao_usuario
-            self.__class__.objects.filter(pk = self.pk).update(email_sent=criacao_usuario)
+        
+        if criacao_usuario and not email_sent_before_save:
+            self.email_sent = True
+            super(Diretoria, self).save(update_fields=['email_sent'])
 
 class Gerencia(models.Model):
     diretoria = models.ForeignKey(Diretoria, on_delete= models.CASCADE)
@@ -50,12 +51,13 @@ class Gerencia(models.Model):
         return f"{self.nome} {self.sobrenome}"
     
     def save(self, *args, **kwargs):
-        super(Gerencia, self).save(*args, **kwargs)
+        email_sent_before_save = self.email_sent
+        super(Diretoria, self).save(*args, **kwargs)
         criacao_usuario = create_user_and_send_email(self.nome, self.sobrenome, self.email)
-        self.email_sent = criacao_usuario
-        if self.email_sent != criacao_usuario:
-            self.email_sent = criacao_usuario
-            self.__class__.objects.filter(pk = self.pk).update(email_sent=criacao_usuario)
+        
+        if criacao_usuario and not email_sent_before_save:
+            self.email_sent = True
+            super(Diretoria, self).save(update_fields=['email_sent'])
 
 
 class Supervisao(models.Model):
@@ -71,12 +73,13 @@ class Supervisao(models.Model):
         return f"{self.nome} {self.sobrenome}"
     
     def save(self, *args, **kwargs):
-        super(Supervisao, self).save(*args, **kwargs)
+        email_sent_before_save = self.email_sent
+        super(Diretoria, self).save(*args, **kwargs)
         criacao_usuario = create_user_and_send_email(self.nome, self.sobrenome, self.email)
-        self.email_sent = criacao_usuario
-        if self.email_sent != criacao_usuario:
-            self.email_sent = criacao_usuario
-            self.__class__.objects.filter(pk = self.pk).update(email_sent=criacao_usuario)
+        
+        if criacao_usuario and not email_sent_before_save:
+            self.email_sent = True
+            super(Diretoria, self).save(update_fields=['email_sent'])
 
 class Agente(models.Model):
     diretoria = models.ForeignKey(Diretoria, on_delete= models.CASCADE)
@@ -93,12 +96,13 @@ class Agente(models.Model):
         return f"{self.nome} {self.sobrenome}"
     
     def save(self, *args, **kwargs):
-        super(Supervisao, self).save(*args, **kwargs)
+        email_sent_before_save = self.email_sent
+        super(Diretoria, self).save(*args, **kwargs)
         criacao_usuario = create_user_and_send_email(self.nome, self.sobrenome, self.email)
-        self.email_sent = criacao_usuario
-        if self.email_sent != criacao_usuario:
-            self.email_sent = criacao_usuario
-            self.__class__.objects.filter(pk = self.pk).update(email_sent=criacao_usuario)   
+        
+        if criacao_usuario and not email_sent_before_save:
+            self.email_sent = True
+            super(Diretoria, self).save(update_fields=['email_sent'])   
 
 
 

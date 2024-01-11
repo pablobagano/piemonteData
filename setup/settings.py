@@ -35,9 +35,9 @@ SECRET_KEY = str(os.getenv('SECRET_KEY'))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG','False') == 'True'
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS','').split()
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split()
 
-CORS_ALLOWED_ORIGINS = str(os.getenv('CORS_ORIGINS','')).split()
+CORS_ALLOWED_ORIGINS = os.getenv('CORS_ORIGINS').split()
 
 # Security Settings
 SECURE_SSL_REDIRECT = os.getenv('SECURE_SSL_REDIRECT', 'False') == 'True'
@@ -67,6 +67,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -98,54 +99,64 @@ WSGI_APPLICATION = 'setup.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-try:
-    conn_string = str(os.getenv('CONN_STRING_DB'))
-    blob_url = str(os.getenv('BLOB_URL'))
-    blob_client = BlobClient.from_connection_string(
-        conn_string,
-        container_name = str(os.getenv('CONTAINER_NAME')),
-        blob_name = str(os.getenv('BLOB_NAME')) 
-    )
-    blob_stream = blob_client.download_blob()
-    blob_data = blob_stream.readall()
-except Exception as e:
-    logger = logging.getLogger(__name__)
-    logger.exception(f"{e}")
-    print(f"{type(e).__name__}:{e}")
-try:
-    temp_cert_file = tempfile.NamedTemporaryFile(delete=False)
-    temp_cert_file.write(blob_data)
-    temp_cert_path = temp_cert_file.name
-    temp_cert_file.close()
-    print(f"Blob data successfully fetched and written to {temp_cert_path}")
-except Exception as e:
-    logger = logging.getLogger(__name__)
-    logger.exception(f"{e}")
-    print(f"{type(e).__name__}:{e}")
-
-DATABASES = {
+if DEBUG is True:
+    print("DEBUG is True")
+    DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': str(os.getenv('DB_NAME')),
-        'USER' : str(os.getenv('DB_USER')),
-        'PASSWORD' : str(os.getenv('DB_PASSWORD')), 
-        'HOST' : str(os.getenv('DB_HOST')), 
-        'PORT': '3306',
-        'OPTIONS':{
-            'ssl':{
-                'ca':temp_cert_path
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+else:
+    try:
+        conn_string = str(os.getenv('CONN_STRING_DB'))
+        blob_url = str(os.getenv('BLOB_URL'))
+        blob_client = BlobClient.from_connection_string(
+            conn_string,
+            container_name = str(os.getenv('CONTAINER_NAME')),
+            blob_name = str(os.getenv('BLOB_NAME')) 
+        )
+        blob_stream = blob_client.download_blob()
+        blob_data = blob_stream.readall()
+    except Exception as e:
+        logger = logging.getLogger(__name__)
+        logger.exception(f"{e}")
+        print(f"{type(e).__name__}:{e}")
+    try:
+        temp_cert_file = tempfile.NamedTemporaryFile(delete=False)
+        temp_cert_file.write(blob_data)
+        temp_cert_path = temp_cert_file.name
+        temp_cert_file.close()
+        print(f"Blob data successfully fetched and written to {temp_cert_path}")
+    except Exception as e:
+        logger = logging.getLogger(__name__)
+        logger.exception(f"{e}")
+        print(f"{type(e).__name__}:{e}")
+
+
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': str(os.getenv('DB_NAME')),
+            'USER' : str(os.getenv('DB_USER')),
+            'PASSWORD' : str(os.getenv('DB_PASSWORD')), 
+            'HOST' : str(os.getenv('DB_HOST')), 
+            'PORT': '3306',
+            'OPTIONS':{
+                'ssl':{
+                    'ca':temp_cert_path
+                }
             }
         }
     }
-}
 
-try:
-    connections['default'].ensure_connection()
-    print("Login successfull")
-except DatabaseError as db_err:
-    logger = logging.getLogger(__name__)
-    logger.exception(f"{db_err}")
-    print(f"DatabaseError: {db_err}")
+    try:
+        connections['default'].ensure_connection()
+        print("Login successfull")
+    except DatabaseError as db_err:
+        logger = logging.getLogger(__name__)
+        logger.exception(f"{db_err}")
+        print(f"DatabaseError: {db_err}")
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
