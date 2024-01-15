@@ -52,12 +52,12 @@ class Gerencia(models.Model):
     
     def save(self, *args, **kwargs):
         email_sent_before_save = self.email_sent
-        super(Diretoria, self).save(*args, **kwargs)
+        super(Gerencia, self).save(*args, **kwargs)
         criacao_usuario = create_user_and_send_email(self.nome, self.sobrenome, self.email)
         
         if criacao_usuario and not email_sent_before_save:
             self.email_sent = True
-            super(Diretoria, self).save(update_fields=['email_sent'])
+            super(Gerencia, self).save(update_fields=['email_sent'])
 
 
 class Supervisao(models.Model):
@@ -74,12 +74,12 @@ class Supervisao(models.Model):
     
     def save(self, *args, **kwargs):
         email_sent_before_save = self.email_sent
-        super(Diretoria, self).save(*args, **kwargs)
+        super(Supervisao, self).save(*args, **kwargs)
         criacao_usuario = create_user_and_send_email(self.nome, self.sobrenome, self.email)
         
         if criacao_usuario and not email_sent_before_save:
             self.email_sent = True
-            super(Diretoria, self).save(update_fields=['email_sent'])
+            super(Supervisao, self).save(update_fields=['email_sent'])
 
 class Agente(models.Model):
     diretoria = models.ForeignKey(Diretoria, on_delete= models.CASCADE)
@@ -97,12 +97,12 @@ class Agente(models.Model):
     
     def save(self, *args, **kwargs):
         email_sent_before_save = self.email_sent
-        super(Diretoria, self).save(*args, **kwargs)
+        super(Agente, self).save(*args, **kwargs)
         criacao_usuario = create_user_and_send_email(self.nome, self.sobrenome, self.email)
         
         if criacao_usuario and not email_sent_before_save:
             self.email_sent = True
-            super(Diretoria, self).save(update_fields=['email_sent'])   
+            super(Agente, self).save(update_fields=['email_sent'])   
 
 
 
