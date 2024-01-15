@@ -16,7 +16,9 @@ def create_user_and_send_email(first_name, last_name, email):
     A username is created along with a link that is sent to the new employee's e-mail in which they will be request to reset their password.
     Aside form logging, the built-in Python library used to aid in exception handliing, all the procedures are executed Django's built-in functions
     """
-    username = f"{first_name}.{last_name}".lower()
+    first_name_part = first_name.split()[0]
+    last_name_part = last_name.split()[-1]
+    username = f"{first_name_part}.{last_name_part}".lower()
     num = 1
     while User.objects.filter(username= username).exists():
         username = f"{username}{num}"
