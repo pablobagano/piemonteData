@@ -41,7 +41,7 @@ class Diretoria(models.Model):
             super(Diretoria, self).save(update_fields=['email_sent'])
 
 class Gerencia(models.Model):
-    diretoria = models.ForeignKey(Diretoria, on_delete= models.CASCADE)
+    diretoria = models.ForeignKey(Diretoria, on_delete= models.SET_NULL, null=True)
     nome = models.CharField(max_length=20, null=False, blank=False)
     sobrenome = models.CharField(max_length=30, null= False, blank=False)
     matricula = models.CharField(max_length=30, null=False, blank=False)
@@ -63,12 +63,12 @@ class Gerencia(models.Model):
 
 
 class Supervisao(models.Model):
-    diretoria = models.ForeignKey(Diretoria, on_delete= models.CASCADE)
-    gerencia = models.ForeignKey(Gerencia, on_delete= models.CASCADE)
+    diretoria = models.ForeignKey(Diretoria, on_delete= models.SET_NULL, null=True)
+    gerencia = models.ForeignKey(Gerencia, on_delete= models.SET_NULL, null=True)
     nome = models.CharField(max_length=20, null=True, blank=False)
     sobrenome = models.CharField(max_length=30, null=True, blank=False)
     matricula = models.CharField(max_length=30, null=False, blank=False)
-    cargo = models.CharField(max_length=20, default='supervisor(a)')
+    cargo = models.CharField(max_length=20, default='supervisor')
     email = models.EmailField()
     email_sent = models.BooleanField(default=False)
 
@@ -85,9 +85,9 @@ class Supervisao(models.Model):
             super(Supervisao, self).save(update_fields=['email_sent'])
 
 class Agente(models.Model):
-    diretoria = models.ForeignKey(Diretoria, on_delete= models.CASCADE)
-    gerencia = models.ForeignKey(Gerencia, on_delete=models.CASCADE)
-    supervisor = models.ForeignKey(Supervisao, on_delete=models.CASCADE)
+    diretoria = models.ForeignKey(Diretoria, on_delete= models.SET_NULL, null=True)
+    gerencia = models.ForeignKey(Gerencia, on_delete= models.SET_NULL, null=True)
+    supervisor = models.ForeignKey(Supervisao, on_delete= models.SET_NULL, null=True)
     nome = models.CharField(max_length=30, null=False, blank=False)
     sobrenome = models.CharField(max_length=50, null=False, blank=False)
     matricula = models.CharField(max_length=30, null=False, blank=False)
@@ -111,10 +111,22 @@ class Agente(models.Model):
 
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete= models.PROTECT, null=False)
     role = models.CharField(max_length=15, null=False, blank=False, default=None)
     must_change_password = models.BooleanField(default=False)
 
     def __str__(self):
         return self.user.username
+    
+    def diretoria_member(self):
+        return self.role == 'diretor'
+    
+    def gerencia_member(self):
+        return self.role == 'gerente'
+    
+    def supervisao_member(self):
+        return self.role == 'supervisor'
+    
+    def agente_member(self):
+        return self.role == 'agente'
  

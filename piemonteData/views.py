@@ -4,10 +4,12 @@ from piemonteData.models import *
 from .serializers import *
 from django_filters.rest_framework import DjangoFilterBackend
 from .filters import AgenteFilter
+from .permissions import diretoriaPermissions, gerenciaPermissions
 
 class DiretoriaViewSet(viewsets.ModelViewSet):
     """Displays all board members"""
     queryset = Diretoria.objects.all()
+    permission_classes = [diretoriaPermissions]
     http_method_names = ['get', 'post', 'put', 'patch']
     serializer_class = DiretoriaSerializer
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter]
@@ -18,6 +20,7 @@ class DiretoriaViewSet(viewsets.ModelViewSet):
 class GerenciaViewSet(viewsets.ModelViewSet):
     """Displays all employees at management level"""
     queryset = Gerencia.objects.all()
+    permission_classes = [diretoriaPermissions, gerenciaPermissions]
     http_method_names = ['get', 'post', 'put', 'patch', 'delete']
     serializer_class = GerenciaSerializer
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter]
