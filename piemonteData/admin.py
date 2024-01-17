@@ -35,6 +35,12 @@ class AgenteAdmin(admin.ModelAdmin):
 
 admin.site.register(Agente, AgenteAdmin)
 
-admin.site.register(UserProfile)
+class UserProfileAdmin(admin.ModelAdmin):
+    list_display = ('user', 'role')
+    list_display_links = ('user',)
+    search_field = ('role')
+    list_per_page = 20
+
+admin.site.register(UserProfile, UserProfileAdmin)
 
 

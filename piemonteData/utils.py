@@ -12,7 +12,7 @@ from .validators import *
 from django.conf import settings
 from unidecode import unidecode
 
-def create_user_and_send_email(first_name, last_name, email):
+def create_user_and_send_email(first_name, last_name, cargo, email):
     """
     The function create_user_and_send_email automates the process of user creation when a now object representing an employee is created. 
     A username is created along with a link that is sent to the new employee's e-mail in which they will be request to reset their password.
@@ -38,7 +38,7 @@ def create_user_and_send_email(first_name, last_name, email):
         'token': token
     })
     if created:
-        UserProfile.objects.create(user=user, must_change_password=True)
+        UserProfile.objects.create(user=user, role=cargo, must_change_password=True)
         try:
             send_mail(
                 'Defina sua senha - PiemoneteData',

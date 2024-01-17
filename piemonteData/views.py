@@ -8,6 +8,7 @@ from .filters import AgenteFilter
 class DiretoriaViewSet(viewsets.ModelViewSet):
     """Displays all board members"""
     queryset = Diretoria.objects.all()
+    http_method_names = ['get', 'post', 'put', 'patch']
     serializer_class = DiretoriaSerializer
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter]
     ordering_fields = ['nome']
@@ -17,6 +18,7 @@ class DiretoriaViewSet(viewsets.ModelViewSet):
 class GerenciaViewSet(viewsets.ModelViewSet):
     """Displays all employees at management level"""
     queryset = Gerencia.objects.all()
+    http_method_names = ['get', 'post', 'put', 'patch', 'delete']
     serializer_class = GerenciaSerializer
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter]
     ordering_fields = ['nome']
@@ -26,6 +28,7 @@ class GerenciaViewSet(viewsets.ModelViewSet):
 class SupervisaoViewSet(viewsets.ModelViewSet):
     """Displays all supervisors"""
     queryset = Supervisao.objects.all()
+    http_method_names = ['get', 'post', 'put', 'patch', 'delete']
     serializer_class = SupervisaoSerializer
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter]
     ordering_fields = ['nome']
@@ -35,6 +38,7 @@ class SupervisaoViewSet(viewsets.ModelViewSet):
 class AgenteViewSet(viewsets.ModelViewSet):
     """Displays all agents"""
     queryset = Agente.objects.all()
+    http_method_names = ['get', 'post', 'put', 'patch', 'delete']
     serializer_class = AgenteSerializer
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter]
     ordering_fields = ['nome']
@@ -49,10 +53,14 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 
 class AgentesPorSupervisor(generics.ListAPIView):
     """Displays a list of agents per supervisor"""
+    serializer_class = AgentesPorSupervisorSerializer
+    filter_backends = [DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter]
+    ordering_fields = ['nome']
+    filterset_fields = ['supervisor']
     def get_queryset(self):
         queryset = Agente.objects.filter(supervisor_id = self.kwargs['pk'])
         return queryset
-    serializer_class = AgentesPorSupervisorSerializer
+    
 
 class AgentesPorCidade(generics.ListAPIView):
     """Displays a list of agents per city"""    

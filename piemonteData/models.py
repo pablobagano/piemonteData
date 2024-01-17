@@ -23,6 +23,7 @@ class Diretoria(models.Model):
     nome = models.CharField(max_length=20, null=False, blank=False)
     sobrenome = models.CharField(max_length=20, null=False, blank=False)
     matricula = models.CharField(max_length=30, null=False, blank=False)
+    cargo = models.CharField(max_length=20, default='diretor')
     email = models.EmailField()
     email_sent = models.BooleanField(default=False)
 
@@ -33,7 +34,7 @@ class Diretoria(models.Model):
     def save(self, *args, **kwargs):
         email_sent_before_save = self.email_sent
         super(Diretoria, self).save(*args, **kwargs)
-        criacao_usuario = create_user_and_send_email(self.nome, self.sobrenome, self.email)
+        criacao_usuario = create_user_and_send_email(self.nome, self.sobrenome, self.cargo, self.email)
         
         if criacao_usuario and not email_sent_before_save:
             self.email_sent = True
@@ -44,6 +45,7 @@ class Gerencia(models.Model):
     nome = models.CharField(max_length=20, null=False, blank=False)
     sobrenome = models.CharField(max_length=30, null= False, blank=False)
     matricula = models.CharField(max_length=30, null=False, blank=False)
+    cargo = models.CharField(max_length=20, default='gerente')
     email = models.EmailField()
     email_sent = models.BooleanField(default=False)
 
@@ -53,7 +55,7 @@ class Gerencia(models.Model):
     def save(self, *args, **kwargs):
         email_sent_before_save = self.email_sent
         super(Gerencia, self).save(*args, **kwargs)
-        criacao_usuario = create_user_and_send_email(self.nome, self.sobrenome, self.email)
+        criacao_usuario = create_user_and_send_email(self.nome, self.sobrenome, self.cargo, self.email)
         
         if criacao_usuario and not email_sent_before_save:
             self.email_sent = True
@@ -66,6 +68,7 @@ class Supervisao(models.Model):
     nome = models.CharField(max_length=20, null=True, blank=False)
     sobrenome = models.CharField(max_length=30, null=True, blank=False)
     matricula = models.CharField(max_length=30, null=False, blank=False)
+    cargo = models.CharField(max_length=20, default='supervisor(a)')
     email = models.EmailField()
     email_sent = models.BooleanField(default=False)
 
@@ -75,7 +78,7 @@ class Supervisao(models.Model):
     def save(self, *args, **kwargs):
         email_sent_before_save = self.email_sent
         super(Supervisao, self).save(*args, **kwargs)
-        criacao_usuario = create_user_and_send_email(self.nome, self.sobrenome, self.email)
+        criacao_usuario = create_user_and_send_email(self.nome, self.sobrenome, self.cargo, self.email)
         
         if criacao_usuario and not email_sent_before_save:
             self.email_sent = True
@@ -88,6 +91,7 @@ class Agente(models.Model):
     nome = models.CharField(max_length=30, null=False, blank=False)
     sobrenome = models.CharField(max_length=50, null=False, blank=False)
     matricula = models.CharField(max_length=30, null=False, blank=False)
+    cargo = models.CharField(max_length=20, default='agente')
     cidade = models.CharField(max_length=50, choices=lista_cidades, null=False, blank= False)
     email = models.EmailField()
     email_sent = models.BooleanField(default=False)
@@ -98,7 +102,7 @@ class Agente(models.Model):
     def save(self, *args, **kwargs):
         email_sent_before_save = self.email_sent
         super(Agente, self).save(*args, **kwargs)
-        criacao_usuario = create_user_and_send_email(self.nome, self.sobrenome, self.email)
+        criacao_usuario = create_user_and_send_email(self.nome, self.sobrenome, self.cargo, self.email)
         
         if criacao_usuario and not email_sent_before_save:
             self.email_sent = True
@@ -108,7 +112,9 @@ class Agente(models.Model):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    role = models.CharField(max_length=15, null=False, blank=False, default=None)
     must_change_password = models.BooleanField(default=False)
 
     def __str__(self):
         return self.user.username
+ 
