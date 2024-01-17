@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.apps import apps
 from django.core.mail import send_mail
 import logging
 from django.contrib.auth.tokens import default_token_generator
@@ -9,6 +10,7 @@ import os
 from rest_framework import serializers
 from .validators import * 
 from django.conf import settings
+from unidecode import unidecode
 
 def create_user_and_send_email(first_name, last_name, email):
     """
@@ -16,8 +18,9 @@ def create_user_and_send_email(first_name, last_name, email):
     A username is created along with a link that is sent to the new employee's e-mail in which they will be request to reset their password.
     Aside form logging, the built-in Python library used to aid in exception handliing, all the procedures are executed Django's built-in functions
     """
-    first_name_part = first_name.split()[0]
-    last_name_part = last_name.split()[-1]
+    UserProfile = apps.get_model('piemonteData', 'UserProfile')
+    first_name_part = unidecode(first_name.split()[0]) 
+    last_name_part = unidecode(last_name.split()[-1]) 
     username = f"{first_name_part}.{last_name_part}".lower()
     num = 1
     while User.objects.filter(username= username).exists():
@@ -35,6 +38,7 @@ def create_user_and_send_email(first_name, last_name, email):
         'token': token
     })
     if created:
+        UserProfile.objects.create(user=user, must_change_password=True)
         try:
             send_mail(
                 'Defina sua senha - PiemoneteData',

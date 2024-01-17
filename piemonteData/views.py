@@ -55,11 +55,15 @@ class AgentesPorSupervisor(generics.ListAPIView):
     serializer_class = AgentesPorSupervisorSerializer
 
 class AgentesPorCidade(generics.ListAPIView):
-    """Displays a list of agents per city"""
+    """Displays a list of agents per city"""    
+    serializer_class = AgentesPorCidadeSerializer
+    filter_backends = [DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter]
+    ordering_fields = ['nome']
+    filterset_fields = ['cidade']
     def get_queryset(self):
         queryset = Agente.objects.all()
         cidade = self.request.query_params.get('cidade', None)
         if cidade is not None:
             queryset = queryset.filter(cidade=cidade)
         return queryset
-    serializer_class = AgentesPorCidadeSerializer
+    

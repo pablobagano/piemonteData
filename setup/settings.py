@@ -222,6 +222,13 @@ if not EMAIL_HOST_USER:
 if not EMAIL_HOST_PASSWORD:
     raise ValueError("EMAIL_HOST_PASSWORD must be set in environment")
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES' : [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication'
+    ]
+}
+
 # Logging configuration
 
 LOGGING = {

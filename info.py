@@ -4,4 +4,5 @@ sergipe = 'Carira,Aracaju,São Cristóvão,N. Sª Da Glória,Neópolis,SimãoDia
 sergipe = sorted(sergipe) 
 cidades = bahia + sergipe 
 cidades = sorted(cidades)
-lista_cidades = zip([i.lower() for i in cidades], cidades)
+lista_cidades = zip([i.lower() for i in cidades], cidades) 
+print(cidades)

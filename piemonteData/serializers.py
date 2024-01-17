@@ -58,3 +58,6 @@ class UserPofileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
         fields = '__all__'
+    
+    def get_username(self,obj):
+        return obj.user
