@@ -27,7 +27,7 @@ router.register('agentes', AgenteViewSet, basename='Agentes')
 router.register('usuarios', UserProfileViewSet, basename= 'Usuarios')
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('central-adm/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls') ),
     path('', include(router.urls)),
     path('supervisores/<int:pk>/agentes/', AgentesPorSupervisor.as_view()),

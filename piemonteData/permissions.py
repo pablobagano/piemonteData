@@ -9,7 +9,7 @@ class diretoriaPermissions(BasePermission):
         if not request.user.is_authenticated:
             return False
         user_profile = getattr(request.user, 'userprofile', None)
-        return user_profile and user_profile.is_diretoria_member()
+        return user_profile and user_profile.role == 'diretor'
 
 class gerenciaPermissions(BasePermission):
     """
