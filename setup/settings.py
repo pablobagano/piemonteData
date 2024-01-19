@@ -226,6 +226,9 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES' : [
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication'
+    ],
+    'DEFAUL_PERMISSIONS_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated'
     ]
 }
 
@@ -277,3 +280,4 @@ MESSAGE_TAGS = {
 # BASE URL
 
 BASE_URL = str(os.getenv('BASE_URL','http:localhost:8000'))
+

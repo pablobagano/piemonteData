@@ -5,11 +5,12 @@ from .serializers import *
 from django_filters.rest_framework import DjangoFilterBackend
 from .filters import AgenteFilter
 from .permissions import diretoriaPermissions, gerenciaPermissions
+from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 
 class DiretoriaViewSet(viewsets.ModelViewSet):
     """Displays all board members"""
     queryset = Diretoria.objects.all()
-    permission_classes = [diretoriaPermissions]
+    permission_classes = [IsAuthenticated, DjangoModelPermissions, diretoriaPermissions]
     http_method_names = ['get', 'post', 'put', 'patch']
     serializer_class = DiretoriaSerializer
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter]

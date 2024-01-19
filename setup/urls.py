@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.contrib.auth import views as auth_views
 from django.contrib.auth.views import PasswordResetConfirmView
 from piemonteData.views import DiretoriaViewSet, GerenciaViewSet, SupervisaoViewSet, AgenteViewSet, UserProfileViewSet, AgentesPorSupervisor, AgentesPorCidade
 from rest_framework import routers 

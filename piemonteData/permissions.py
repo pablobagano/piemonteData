@@ -9,13 +9,12 @@ class diretoriaPermissions(BasePermission):
         if not request.user.is_authenticated:
             return False
         user_profile = getattr(request.user, 'userprofile', None)
-        return user_profile and user_profile.role == 'diretor'
+        return user_profile and user_profile.diretoria_member()
 
 class gerenciaPermissions(BasePermission):
     """
         Ensures that each manager only has access to the data of agentes subordinated to them
     """
-
     def has_object_permission(self, request, view, obj):
         
         if not request.user.is_authenticated:
