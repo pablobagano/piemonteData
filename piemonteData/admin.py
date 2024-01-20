@@ -36,9 +36,9 @@ class AgenteAdmin(admin.ModelAdmin):
 admin.site.register(Agente, AgenteAdmin)
 
 class UserProfileAdmin(admin.ModelAdmin):
-    list_display = ('user', 'role')
-    list_display_links = ('user',)
-    search_field = ('role')
+    list_display = ('user', 'nome', 'sobrenome', 'role', 'gerencia', 'supervisao')
+    list_display_links = ('user','nome', 'sobrenome', 'role', 'gerencia', 'supervisao')
+    search_field = ('user', 'role', 'gerencia', 'supervisao')
     list_per_page = 20
 
 admin.site.register(UserProfile, UserProfileAdmin)

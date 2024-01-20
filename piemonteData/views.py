@@ -5,14 +5,16 @@ from .serializers import *
 from django_filters.rest_framework import DjangoFilterBackend
 from .filters import AgenteFilter
 from .permissions import diretoriaPermissions, gerenciaPermissions
-from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.authentication import BasicAuthentication
 
 class DiretoriaViewSet(viewsets.ModelViewSet):
     """Displays all board members"""
     queryset = Diretoria.objects.all()
-    permission_classes = [IsAuthenticated, DjangoModelPermissions, diretoriaPermissions]
-    http_method_names = ['get', 'post', 'put', 'patch']
+    authentication_classes = [BasicAuthentication]
+    permission_classes = [IsAuthenticated, diretoriaPermissions]
     serializer_class = DiretoriaSerializer
+    http_method_names = ['get', 'post', 'put', 'patch']
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter]
     ordering_fields = ['nome']
     search_fields = ['nome', 'matricula']
@@ -21,7 +23,8 @@ class DiretoriaViewSet(viewsets.ModelViewSet):
 class GerenciaViewSet(viewsets.ModelViewSet):
     """Displays all employees at management level"""
     queryset = Gerencia.objects.all()
-    permission_classes = [diretoriaPermissions, gerenciaPermissions]
+    authentication_classes = [BasicAuthentication]
+    permission_classes = [diretoriaPermissions]
     http_method_names = ['get', 'post', 'put', 'patch', 'delete']
     serializer_class = GerenciaSerializer
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter]
@@ -32,6 +35,8 @@ class GerenciaViewSet(viewsets.ModelViewSet):
 class SupervisaoViewSet(viewsets.ModelViewSet):
     """Displays all supervisors"""
     queryset = Supervisao.objects.all()
+    authentication_classes = [BasicAuthentication]
+    permission_classes = [diretoriaPermissions, gerenciaPermissions]
     http_method_names = ['get', 'post', 'put', 'patch', 'delete']
     serializer_class = SupervisaoSerializer
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter]

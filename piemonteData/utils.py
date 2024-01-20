@@ -38,7 +38,7 @@ def create_user_and_send_email(first_name, last_name, cargo, email):
         'token': token
     })
     if created:
-        UserProfile.objects.create(user=user, role=cargo, must_change_password=True)
+        new_user = UserProfile.objects.create(user=user, nome = first_name, sobrenome = last_name, role=cargo, must_change_password=True)
         try:
             send_mail(
                 'Defina sua senha - PiemoneteData',
@@ -47,7 +47,7 @@ def create_user_and_send_email(first_name, last_name, cargo, email):
                 [user.email],
                 fail_silently=False
             )
-            return True
+            return True, new_user
         except Exception:
             logger = logging.getLogger(__name__)
             logger.exception(f"Não foi possível enviar email de confirmação")
@@ -61,6 +61,7 @@ def create_user_and_send_email(first_name, last_name, cargo, email):
             except Exception:
                 logger.exception(f"Erro ao enviar email de fallback")
             return False
+
 
 
 # Validation Function 
