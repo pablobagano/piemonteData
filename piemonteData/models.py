@@ -34,8 +34,10 @@ class Diretoria(models.Model):
     def save(self, *args, **kwargs):
         email_sent_before_save = self.email_sent
         super(Diretoria, self).save(*args, **kwargs)
-        criacao_usuario = create_user_and_send_email(self.nome, self.sobrenome, self.cargo, self.email)
-        
+        criacao_usuario, new_user = create_user_and_send_email(self.nome, self.sobrenome, self.cargo, self.email)
+        new_user.root_id = self.id
+        new_user.save()
+
         if criacao_usuario and not email_sent_before_save:
             self.email_sent = True
             super(Diretoria, self).save(update_fields=['email_sent'])
@@ -55,8 +57,10 @@ class Gerencia(models.Model):
     def save(self, *args, **kwargs):
         email_sent_before_save = self.email_sent
         super(Gerencia, self).save(*args, **kwargs)
-        criacao_usuario = create_user_and_send_email(self.nome, self.sobrenome, self.cargo, self.email)
-        
+        criacao_usuario, new_user = create_user_and_send_email(self.nome, self.sobrenome, self.cargo, self.email)
+        new_user.root_id = self.id
+        new_user.save()
+
         if criacao_usuario and not email_sent_before_save:
             self.email_sent = True
             super(Gerencia, self).save(update_fields=['email_sent'])
@@ -80,6 +84,7 @@ class Supervisao(models.Model):
         super(Supervisao, self).save(*args, **kwargs)
         criacao_usuario, new_user= create_user_and_send_email(self.nome, self.sobrenome, self.cargo, self.email)
         new_user.gerencia = self.gerencia
+        new_user.root_id = self.id
         new_user.save()
         
         
@@ -108,6 +113,7 @@ class Agente(models.Model):
         criacao_usuario, new_user = create_user_and_send_email(self.nome, self.sobrenome, self.cargo, self.email)
         new_user.gerencia = self.gerencia
         new_user.supervisor = self.supervisor
+        new_user.root_id = self.id
         new_user.save()
 
         if criacao_usuario and not email_sent_before_save:
@@ -120,6 +126,7 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete= models.PROTECT, null=False)
     nome = models.CharField(max_length=30, null=False, blank=False, default = None)
     sobrenome = models.CharField(max_length=30, null=False, blank=False, default = None)
+    root_id = models.IntegerField(null=True, blank=False)
     role = models.CharField(max_length=15, null=False, blank=False, default=None)
     gerencia = models.ForeignKey(Gerencia, on_delete=models.SET_NULL, null=True, blank=True)
     supervisao = models.ForeignKey(Supervisao, on_delete=models.SET_NULL, null=True, blank=True)
