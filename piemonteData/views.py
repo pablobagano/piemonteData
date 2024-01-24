@@ -7,7 +7,6 @@ from .filters import AgenteFilter
 from .permissions import diretoriaPermissions, get_filtered_queryset_for_permissions, adminstrationPermissions
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.authentication import BasicAuthentication
-from rest_framework.exceptions import PermissionDenied
 
 class DiretoriaViewSet(viewsets.ModelViewSet):
     """Displays all board members"""
@@ -35,8 +34,7 @@ class GerenciaViewSet(viewsets.ModelViewSet):
 
 
 class SupervisaoViewSet(viewsets.ModelViewSet):
-    """Displays all supervisors"""
-    # queryset = Supervisao.objects.all()
+    """Displays supervisor to their respective managers. Directors have unrestricted access"""
     authentication_classes = [BasicAuthentication]
     permission_classes = [IsAuthenticated]
     http_method_names = ['get', 'post', 'put', 'patch', 'delete']
@@ -53,10 +51,8 @@ class SupervisaoViewSet(viewsets.ModelViewSet):
             role_check= lambda profile: profile.diretoria_member() or profile.gerencia_member() or profile.gerencia_member() or profile.agente_member()
         )
 
-    
 class AgenteViewSet(viewsets.ModelViewSet):
-    """Displays all agents"""
-    queryset = Agente.objects.all()
+    """Displays agents to their respective managers and supervisors. Directors have unrestricted accesss"""
     http_method_names = ['get', 'post', 'put', 'patch', 'delete']
     serializer_class = AgenteSerializer
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter]
@@ -73,7 +69,7 @@ class AgenteViewSet(viewsets.ModelViewSet):
         )
 
 class UserProfileViewSet(viewsets.ModelViewSet):
-    """Displays user profiles"""
+    """Displays user profiles to the administrator"""
     queryset = UserProfile.objects.all()
     authentication_classes = [BasicAuthentication]
     permission_classes = [IsAdminUser]
@@ -81,7 +77,7 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 
 
 class AgentesPorSupervisor(generics.ListAPIView):
-    """Displays a list of agents per supervisor"""
+    """Displays a list of agents per supervisor. Administration permissions (Managers or Directors) are required"""
     authentication_classes = [BasicAuthentication]
     permission_classes = [adminstrationPermissions]
     serializer_class = AgentesPorSupervisorSerializer
@@ -94,7 +90,9 @@ class AgentesPorSupervisor(generics.ListAPIView):
     
 
 class AgentesPorCidade(generics.ListAPIView):
-    """Displays a list of agents per city"""    
+    """Displays a list of agents per city. Administration permissions (Managers or Directors) are required"""
+    authentication_classes = [BasicAuthentication]
+    permission_classes = [adminstrationPermissions]
     serializer_class = AgentesPorCidadeSerializer
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter]
     ordering_fields = ['nome']

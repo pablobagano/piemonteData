@@ -35,7 +35,7 @@ def get_filtered_queryset_for_permissions(user, model, role_check, gerencia_fiel
     if role_check(user_profile):
             if user_profile.gerencia_member():
                  gerencia_field = user_profile.root_id
-                 return model.objects.filter(gerencia=gerencia_field)
+                 return model.objects.filter(supervisor__gerencia=gerencia_field)
             elif user_profile.supervisao_member():
                  supervisao_field = user_profile.root_id
                  return model.objects.filter(supervisao=supervisao_field)

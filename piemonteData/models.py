@@ -104,10 +104,13 @@ class Agente(models.Model):
     email = models.EmailField()
     email_sent = models.BooleanField(default=False)
 
+
     def __str__(self):
         return f"{self.nome} {self.sobrenome}"
     
     def save(self, *args, **kwargs):
+        if self.supervisor and not self.gerencia:
+            self.gerencia = self.supervisor.gerencia
         email_sent_before_save = self.email_sent
         super(Agente, self).save(*args, **kwargs)
         criacao_usuario, new_user = create_user_and_send_email(self.nome, self.sobrenome, self.cargo, self.email)
@@ -147,10 +150,4 @@ class UserProfile(models.Model):
     def agente_member(self):
         return self.role == 'agente' 
     
-    def delete(self, *args, **kwargs):
-        """
-            This method deletes the User when the UserProfile is delete
-        """
-        user = self.user
-        super(UserProfile).delete(*args, **kwargs)
-        user.delete()
+   

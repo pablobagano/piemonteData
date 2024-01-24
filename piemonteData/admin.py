@@ -28,10 +28,16 @@ class SupervisorAdmin(admin.ModelAdmin):
 admin.site.register(Supervisao, SupervisorAdmin)
 
 class AgenteAdmin(admin.ModelAdmin):
-    list_display = ('id', 'nome', 'sobrenome', 'matricula', 'cidade', 'email', 'diretoria', 'gerencia', 'supervisor')
+    list_display = ('id', 'nome', 'sobrenome', 'matricula', 'cidade', 'email', 'diretoria', 'supervisor', 'display_gerencia')
     list_display_links = ('id', 'nome', 'matricula')
     search_fields = ('nome', 'matricula', 'supervisor','cidade',)
     list_per_page = 20
+    exclude = ('gerencia',)
+
+    def display_gerencia(self, obj):
+        gerencia = obj.supervisor.gerencia if  obj.supervisor else None
+        print(f"{gerencia}")
+    display_gerencia.short_description = 'Gerencia'
 
 admin.site.register(Agente, AgenteAdmin)
 
